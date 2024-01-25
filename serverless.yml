@@ -1,0 +1,84 @@
+
+service: book-service
+
+#frameworkVersion: '2'
+
+plugins:
+  #- serverless-offline
+  - serverless-plugin-typescript
+  - serverless-localstack
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: local
+  region: us-east-1
+  profile: local
+  timeout: 15
+
+custom:
+  localstack:
+    stages:
+      # list of stages for which the plugin should be enabled
+      - local
+    host: http://localhost  # optional - LocalStack host to connect to
+    
+functions:
+  health:
+    handler: src/functions/health.handler
+    description: Lambda function just for article purposes - to show sls offline
+    memorySize: 256
+    events:
+      - http:
+          path: /health
+          method: get
+          cors: true
+
+  listBooks:
+    handler: src/functions/controllers/bookController.list
+    description: Lambda function just for article purposes - to show sls offline
+    memorySize: 256
+    events:
+      - http:
+          path: books
+          method: get
+          cors: true
+  createBook:
+    handler: src/functions/controllers/bookController.create
+    description: Lambda function just for article purposes - to show sls offline
+    memorySize: 256
+    events:
+      - http:
+          path: books
+          method: post
+          cors: true
+  updateBook:
+    handler: src/functions/controllers/bookController.update
+    description: Lambda function just for article purposes - to show sls offline
+    memorySize: 256
+    events:
+      - http:
+          path: books/{bookId}
+          method: put
+          cors: true
+
+  deleteBook:
+    handler: src/functions/controllers/bookController.remove
+    description: Lambda function just for article purposes - to show sls offline
+    memorySize: 256
+    events:
+      - http:
+          path: books/{bookId}
+          method: delete
+          cors: true
+
+  getBook:
+    handler: src/functions/controllers/bookController.get
+    description: Lambda function just for article purposes - to show sls offline
+    memorySize: 256
+    events:
+      - http:
+          path: books/{bookId}
+          method: get
+          cors: true
+

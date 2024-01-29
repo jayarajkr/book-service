@@ -1,8 +1,16 @@
 import { Book, BookModel } from "../models/bookModel";
 import { injectable } from 'tsyringe';
 
+
+export interface BookService{
+    createBook(book:Book):Promise<Book>;
+    updateBook(bookId:number, book:Book):Promise<Book>;
+    deleteBook(bookId:number):Promise<boolean>;
+    getBook(bookId:number):Promise<Book>;
+    listBooks():Promise<Book[]>;
+}
 @injectable()
-export class BookService{
+export class BookServiceImpl implements BookService{
     public async createBook(book:Book):Promise<Book>{
         return book;
     }

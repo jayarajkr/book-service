@@ -1,7 +1,12 @@
 import { Lifecycle, scoped } from "tsyringe";
 
+export interface LoggerService{
+    setContext(lambdaName: string, userId: string):void;
+    log(message: string):void;
+}
+
 @scoped(Lifecycle.ResolutionScoped)
-export class LoggerService {
+export class LoggerServiceImpl implements LoggerService {
   private lambdaName: string = "";
   private userId: string = "";
   private logsLogged: number = 0;

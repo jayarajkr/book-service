@@ -1,16 +1,25 @@
 import "reflect-metadata";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { LambdaResponse } from "../types/types";
-import { container, injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { LoggerService } from "../services/loggerService";
 import { ResponseUtils } from "../utils/responseUtils";
 import { Book } from "../models/bookModel";
 import { BookService } from "../services/bookService";
+import { diContainer } from "../registry/diRegistry";
 
 
 @injectable()
 export class BookController {
-    constructor(private loggerService: LoggerService, private bookService: BookService) { }
+    private loggerService: LoggerService;
+    
+    private bookService: BookService;
+
+    constructor(@inject("loggerService") loggerService: LoggerService,
+         @inject("bookService") bookService: BookService) {
+        this.loggerService = loggerService;
+        this.bookService = bookService;
+     }
 
     public async list(event: APIGatewayProxyEvent): Promise<LambdaResponse> {
         this.loggerService.setContext("listBooks", "123");
@@ -61,30 +70,30 @@ export class BookController {
 
 export const list = async (event: APIGatewayProxyEvent): Promise<LambdaResponse> => {
     console.log("Invoking..list");
-    const controller = container.resolve(BookController);
+    const controller = diContainer.resolve(BookController);
     return controller.list(event);
 };
 
 export const create = async (event: APIGatewayProxyEvent): Promise<LambdaResponse> => {
     console.log("Invoking..");
-    const controller = container.resolve(BookController);
+    const controller = diContainer.resolve(BookController);
     return controller.create(event);
 };
 
 export const update = async (event: APIGatewayProxyEvent): Promise<LambdaResponse> => {
     console.log("Invoking..");
-    const controller = container.resolve(BookController);
+    const controller = diContainer.resolve(BookController);
     return controller.update(event);
 };
 
 export const remove = async (event: APIGatewayProxyEvent): Promise<LambdaResponse> => {
     console.log("Invoking..");
-    const controller = container.resolve(BookController);
+    const controller = diContainer.resolve(BookController);
     return controller.delete(event);
 };
 
 export const get = async (event: APIGatewayProxyEvent): Promise<LambdaResponse> => {
     console.log("Invoking..");
-    const controller = container.resolve(BookController);
+    const controller = diContainer.resolve(BookController);
     return controller.get(event);
 };

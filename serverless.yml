@@ -4,7 +4,7 @@ service: book-service
 #frameworkVersion: '2'
 
 plugins:
-  #- serverless-offline
+  - serverless-offline
   - serverless-plugin-typescript
   - serverless-localstack
 
